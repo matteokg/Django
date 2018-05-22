@@ -1,0 +1,46 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Todos</title>
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.12/css/all.css" integrity="sha384-G0fIWCsCzJIMAVNQPfjH08cyYaUtMwjJwqiRKxxE/rx96Uroj1BtIQ6MLJuheaO9" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'todos/style.css' %} ">
+
+</head>
+
+<body>
+    <div id="app">
+        <h1>What do you want to do today?</h1>
+
+        <div class="holder">
+            <form action="{% url 'todos:add' %}" method="POST">
+                {% csrf_token %}
+                <input type="text" name="text" placeholder="Enter a task you have and press enter..." required />
+
+            
+            </form>
+            <ul>
+                {% for todos in todo_list%} 
+                
+                <li  {% if todos.complete %} class="completed" {% endif %}> {{ todos }}
+
+                   
+               
+                    <a href="{% url 'todos:delete' todos.id %}"><i class="fa fa-times"></i> </a> <a href="{% url 'todos:complete' todos.id %}"><i class="fa fa-check"></i></a>
+                <a style="display: none;" {% if todos.complete %} style="display: block;" {% endif %} href="{% url 'todos:undo' todos.id%}"><i class ="fa fa-undo"></i></a>
+                </li>
+
+                {% endfor %}
+            </ul>
+        </div>
+
+    </div>
+
+</body>
+
+</html>
